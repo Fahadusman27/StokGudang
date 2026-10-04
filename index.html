@@ -90,12 +90,12 @@
       </div>
     </div>
 
-    <!-- PANEL KONTROL: TANGGAL & PENCARIAN -->
+    <!-- PANEL KONTROL: TANGGAL, LOKASI & PENCARIAN -->
     <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-xs mb-6">
-      <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+      <div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
         
         <!-- Input Tanggal -->
-        <div class="flex items-center gap-2.5 bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 sm:w-64">
+        <div class="flex items-center gap-2.5 bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 w-full lg:w-56 flex-shrink-0">
           <svg class="w-4 h-4 text-emerald-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
           </svg>
@@ -105,6 +105,25 @@
               type="date" 
               id="tanggalInput" 
               class="bg-transparent text-xs font-bold text-slate-800 outline-none cursor-pointer mt-0.5"
+            >
+          </div>
+        </div>
+
+        <!-- Input Lokasi Gudang / Penyimpanan -->
+        <div class="flex items-center gap-2.5 bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 w-full lg:w-64 flex-shrink-0 focus-within:ring-2 focus-within:ring-emerald-500/20 focus-within:border-emerald-500 transition">
+          <svg class="w-4 h-4 text-emerald-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          <div class="flex flex-col flex-grow">
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider leading-none">Lokasi Penyimpanan <span class="text-rose-500">*</span></span>
+            <input 
+              type="text" 
+              id="lokasiInput" 
+              placeholder="Contoh: Rak A1, Blok B, Lantai 2..." 
+              autocomplete="off"
+              oninput="handleLokasiChange(this.value)"
+              class="bg-transparent text-xs font-bold text-slate-800 placeholder-slate-400 outline-none mt-0.5"
             >
           </div>
         </div>
@@ -139,9 +158,20 @@
     </div>
 
     <!-- PETUNJUK & STATISTIK RINGKAS -->
-    <div class="flex items-center justify-between mb-3.5 px-1 text-xs text-slate-500">
-      <div>
-        Daftar <span id="displayedCount" class="font-bold text-slate-800">21</span> produk. Masukkan kuantitas pada produk yang tersedia.
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-3.5 px-1 text-xs text-slate-500">
+      <div class="flex flex-wrap items-center gap-2">
+        <span>Daftar <span id="displayedCount" class="font-bold text-slate-800">21</span> produk.</span>
+        <span class="text-slate-300">•</span>
+        <span class="inline-flex items-center gap-1.5 text-[11px] font-semibold text-slate-600">
+          Output:
+          <span id="lokasiPreviewBadge" class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full font-bold text-emerald-800 bg-emerald-100/90 border border-emerald-300 shadow-2xs">
+            <svg class="w-3 h-3 text-emerald-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            <span id="lokasiPreviewText">Gudang (Belum diisi)</span>
+          </span>
+        </span>
       </div>
       <div id="filledCounterText" class="font-bold text-emerald-700">
         0 produk terisi
@@ -168,9 +198,11 @@
           0
         </span>
         <div>
-          <span class="font-bold text-xs sm:text-sm text-slate-900" id="summaryText">0 produk diisi</span>
-          <span class="text-slate-400 text-xs hidden sm:inline ml-1">•</span>
-          <span class="text-slate-500 text-xs block sm:inline ml-0 sm:ml-1" id="totalQtyText">Total 0 pcs</span>
+          <div class="flex items-center gap-1.5">
+            <span class="font-bold text-xs sm:text-sm text-slate-900" id="summaryText">0 produk diisi</span>
+            <span id="bottomLokasiBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200">Gudang (-)</span>
+          </div>
+          <span class="text-slate-500 text-xs block sm:inline" id="totalQtyText">Total 0 pcs</span>
         </div>
       </div>
 
@@ -203,7 +235,7 @@
 
   <!-- ================= JAVASCRIPT LOGIC ================= -->
   <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzwllBb46iWZxzobEhWjZAMq0gSDVPhG8ykV8JL0AlM1dy95PVVNQ1jaihanQ1Y4xIR/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwPJ37XvPfBI3U4_GxvVMYY9hn-PoScgMQOPJyA1c1xgAyDohdrvdRvPDurh4Gco2GD/exec";
     const PENANDA_DIVISI = "Icang";
     const STORAGE_KEY = "restok_history_icang";
 
@@ -237,6 +269,10 @@
     // DOM Elements
     const grid = document.getElementById('productGrid');
     const tanggalInput = document.getElementById('tanggalInput');
+    const lokasiInput = document.getElementById('lokasiInput');
+    const lokasiPreviewText = document.getElementById('lokasiPreviewText');
+    const lokasiPreviewBadge = document.getElementById('lokasiPreviewBadge');
+    const bottomLokasiBadge = document.getElementById('bottomLokasiBadge');
     const searchBox = document.getElementById('searchBox');
     const displayedCount = document.getElementById('displayedCount');
     const filledCounterText = document.getElementById('filledCounterText');
@@ -258,6 +294,13 @@
       const dd = String(now.getDate()).padStart(2, '0');
       tanggalInput.value = `${yyyy}-${mm}-${dd}`;
 
+      // Ambil lokasi terakhir dari penyimpanan lokal
+      const savedLokasi = localStorage.getItem('last_gudang_lokasi') || '';
+      if (savedLokasi) {
+        lokasiInput.value = savedLokasi;
+      }
+      handleLokasiChange(savedLokasi);
+
       // Inisialisasi State
       PRODUCTS.forEach(p => {
         quantities[p] = 0;
@@ -265,6 +308,44 @@
 
       renderProductGrid();
     });
+
+    // Helper format output lokasi: menghasilkan 'Gudang (lokasi input)'
+    function getFormattedLokasi(rawVal) {
+      const val = (rawVal || '').trim();
+      if (!val) return '';
+      // Jika user sudah menuliskan dengan awalan 'Gudang (..)', biarkan sesuai
+      if (val.toLowerCase().startsWith('gudang (')) {
+        return val;
+      } else if (val.toLowerCase().startsWith('gudang ')) {
+        const sub = val.substring(7).trim();
+        return sub ? `Gudang (${sub})` : 'Gudang';
+      } else if (val.toLowerCase() === 'gudang') {
+        return 'Gudang';
+      }
+      return `Gudang (${val})`;
+    }
+
+    // Handler input perubahan lokasi secara real-time
+    function handleLokasiChange(val) {
+      const trimmed = (val || '').trim();
+      const formatted = getFormattedLokasi(trimmed);
+
+      if (lokasiPreviewText) {
+        lokasiPreviewText.textContent = formatted || 'Gudang (Belum diisi)';
+      }
+
+      if (lokasiPreviewBadge) {
+        if (formatted) {
+          lokasiPreviewBadge.className = "inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full font-bold text-emerald-800 bg-emerald-100/90 border border-emerald-300 shadow-2xs";
+        } else {
+          lokasiPreviewBadge.className = "inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full font-semibold text-slate-500 bg-slate-100 border border-slate-200";
+        }
+      }
+
+      if (bottomLokasiBadge) {
+        bottomLokasiBadge.textContent = formatted || 'Gudang (-)';
+      }
+    }
 
     // Render Grid Produk Modern
     function renderProductGrid() {
@@ -395,10 +476,26 @@
         return;
       }
 
+      const rawLokasi = (lokasiInput.value || '').trim();
+      if (!rawLokasi) {
+        showAlert('Lokasi penyimpanan wajib diisi!', true);
+        lokasiInput.focus();
+        return;
+      }
+
+      const outputLokasi = getFormattedLokasi(rawLokasi);
+
+      // Simpan lokasi terakhir ke localStorage agar tidak perlu mengetik ulang
+      localStorage.setItem('last_gudang_lokasi', rawLokasi);
+
       const itemsToSave = [];
       Object.keys(quantities).forEach(prod => {
         if (quantities[prod] > 0) {
-          itemsToSave.push({ namaProduk: prod, jumlahProduk: quantities[prod] });
+          itemsToSave.push({ 
+            namaProduk: prod, 
+            jumlahProduk: quantities[prod],
+            lokasi: outputLokasi 
+          });
         }
       });
 
@@ -415,6 +512,8 @@
         const payload = {
           penanda: PENANDA_DIVISI,
           tanggal: tanggal,
+          lokasi: outputLokasi,
+          namaLokasi: outputLokasi,
           items: itemsToSave
         };
 
@@ -428,9 +527,9 @@
 
         if (result.status === 'success') {
           // Simpan ke cache lokal agar dashboard langsung tersinkron
-          saveLocalHistoryCache(itemsToSave, tanggal);
+          saveLocalHistoryCache(itemsToSave, tanggal, outputLokasi, rawLokasi);
 
-          // Reset nilai form
+          // Reset nilai form kuantitas produk
           PRODUCTS.forEach(p => {
             quantities[p] = 0;
             const input = document.getElementById(`prod-${escapeId(p)}`);
@@ -442,7 +541,7 @@
           });
 
           updateSummaryBar();
-          showAlert(`Berhasil menyimpan ${itemsToSave.length} produk ke database!`);
+          showAlert(`Berhasil menyimpan ${itemsToSave.length} produk ke ${outputLokasi}!`);
           window.scrollTo({ top: 0, behavior: 'smooth' });
         } else {
           // Fallback sequential
@@ -454,6 +553,8 @@
                 body: JSON.stringify({
                   penanda: PENANDA_DIVISI,
                   tanggal: tanggal,
+                  lokasi: outputLokasi,
+                  namaLokasi: outputLokasi,
                   namaProduk: item.namaProduk,
                   jumlahProduk: item.jumlahProduk
                 }),
@@ -468,7 +569,7 @@
             }
           }
 
-          saveLocalHistoryCache(itemsToSave, tanggal);
+          saveLocalHistoryCache(itemsToSave, tanggal, outputLokasi, rawLokasi);
 
           PRODUCTS.forEach(p => {
             quantities[p] = 0;
@@ -476,7 +577,7 @@
             if (input) input.value = '';
           });
           updateSummaryBar();
-          showAlert(`Selesai! ${successCount} produk berhasil dicatat.`);
+          showAlert(`Selesai! ${successCount} produk berhasil dicatat ke ${outputLokasi}.`);
         }
 
       } catch (err) {
@@ -489,11 +590,17 @@
       }
     }
 
-    function saveLocalHistoryCache(items, tanggal) {
+    function saveLocalHistoryCache(items, tanggal, outputLokasi, rawLokasi) {
       try {
         let stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
         items.forEach(it => {
-          stored.unshift({ tanggal: tanggal, namaProduk: it.namaProduk, jumlahProduk: it.jumlahProduk });
+          stored.unshift({ 
+            tanggal: tanggal, 
+            lokasi: rawLokasi,
+            namaSales: outputLokasi, // Format "Gudang (lokasi input)" agar konsisten di dashboard
+            namaProduk: it.namaProduk, 
+            jumlahProduk: it.jumlahProduk 
+          });
         });
         if (stored.length > 100) stored = stored.slice(0, 100);
         localStorage.setItem(STORAGE_KEY, JSON.stringify(stored));
