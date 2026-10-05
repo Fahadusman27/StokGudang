@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Restok Produk</title>
+  <title>Restok Produk – Divisi Gudang</title>
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -11,7 +11,7 @@
   <!-- Google Fonts: Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <script>
     tailwind.config = {
@@ -25,32 +25,16 @@
     }
   </script>
 
-  <style>
-    body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-    }
-    .fade-in {
-      animation: fadeIn 0.25s ease-out forwards;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-4px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    input[type=number]::-webkit-inner-spin-button, 
-    input[type=number]::-webkit-outer-spin-button { 
-      -webkit-appearance: none; 
-      margin: 0; 
-    }
-    input[type=number] {
-      -moz-appearance: textfield;
-    }
-  </style>
+  <!-- External Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between antialiased selection:bg-emerald-500 selection:text-white pb-24">
 
   <!-- ================= HEADER MODERN ================= -->
   <header class="bg-white border-b border-slate-200/80 sticky top-0 z-40 shadow-xs">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-3">
+      
+      <!-- Brand Logo & Title -->
       <div class="flex items-center gap-3">
         <a href="index.html" class="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white shadow-sm shadow-emerald-500/20 hover:opacity-90 transition">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -59,16 +43,47 @@
         </a>
         <div>
           <h1 class="text-base sm:text-lg font-bold text-slate-900 leading-tight">Restok Produk</h1>
-          <p class="text-xs text-slate-500">Pencatatan stok & persediaan barang</p>
+          <p class="text-xs text-slate-500">Pencatatan &amp; manajemen stok persediaan</p>
         </div>
       </div>
       
-      <div class="flex items-center gap-2.5">
-        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          <span>Online</span>
-        </span>
+      <!-- Navigasi Tab Mode: Input vs Riwayat & Edit -->
+      <div class="flex items-center gap-2">
+        <div class="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200">
+          <button 
+            type="button" 
+            id="tabBtnInput" 
+            onclick="switchTabMode('input')" 
+            class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition bg-white text-emerald-700 shadow-xs cursor-pointer"
+          >
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+            <span>Input Restok</span>
+          </button>
+          
+          <button 
+            type="button" 
+            id="tabBtnRiwayat" 
+            onclick="switchTabMode('riwayat')" 
+            class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 transition cursor-pointer"
+          >
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+            </svg>
+            <span>Riwayat &amp; Edit</span>
+            <span id="tabRiwayatBadge" class="ml-1 px-1.5 py-0.5 rounded-full text-[10px] font-extrabold bg-slate-200 text-slate-700">0</span>
+          </button>
+        </div>
+
+        <a href="../history/index.html" class="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-100 text-xs font-semibold transition" title="Ke Dashboard Utama">
+          <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+          </svg>
+          <span>Dashboard</span>
+        </a>
       </div>
+
     </div>
   </header>
 
@@ -90,106 +105,251 @@
       </div>
     </div>
 
-    <!-- PANEL KONTROL: TANGGAL, LOKASI & PENCARIAN -->
-    <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-xs mb-6">
-      <div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
-        
-        <!-- Input Tanggal -->
-        <div class="flex items-center gap-2.5 bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 w-full lg:w-56 flex-shrink-0">
-          <svg class="w-4 h-4 text-emerald-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-          </svg>
-          <div class="flex flex-col flex-grow">
-            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider leading-none">Tanggal</span>
-            <input 
-              type="date" 
-              id="tanggalInput" 
-              class="bg-transparent text-xs font-bold text-slate-800 outline-none cursor-pointer mt-0.5"
-            >
+    <!-- ================= VIEW 1: FORM INPUT RESTOK ================= -->
+    <div id="viewInput">
+      
+      <!-- PANEL KONTROL: TANGGAL, LOKASI & PENCARIAN -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-xs mb-6">
+        <div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
+          
+          <!-- Input Tanggal -->
+          <div class="flex items-center gap-2.5 bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 w-full lg:w-56 flex-shrink-0">
+            <svg class="w-4 h-4 text-emerald-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <div class="flex flex-col flex-grow">
+              <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider leading-none">Tanggal</span>
+              <input 
+                type="date" 
+                id="tanggalInput" 
+                class="bg-transparent text-xs font-bold text-slate-800 outline-none cursor-pointer mt-0.5"
+              >
+            </div>
           </div>
-        </div>
 
-        <!-- Input Lokasi Gudang / Penyimpanan -->
-        <div class="flex items-center gap-2.5 bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 w-full lg:w-64 flex-shrink-0 focus-within:ring-2 focus-within:ring-emerald-500/20 focus-within:border-emerald-500 transition">
-          <svg class="w-4 h-4 text-emerald-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-          </svg>
-          <div class="flex flex-col flex-grow">
-            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider leading-none">Lokasi Penyimpanan <span class="text-rose-500">*</span></span>
+          <!-- Input Lokasi Gudang / Penyimpanan -->
+          <div class="flex items-center gap-2.5 bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 w-full lg:w-64 flex-shrink-0 focus-within:ring-2 focus-within:ring-emerald-500/20 focus-within:border-emerald-500 transition">
+            <svg class="w-4 h-4 text-emerald-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            <div class="flex flex-col flex-grow">
+              <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider leading-none">Lokasi Penyimpanan <span class="text-rose-500">*</span></span>
+              <input 
+                type="text" 
+                id="lokasiInput" 
+                placeholder="Contoh: Rak A1, Blok B, Lantai 2..." 
+                autocomplete="off"
+                oninput="handleLokasiChange(this.value)"
+                class="bg-transparent text-xs font-bold text-slate-800 placeholder-slate-400 outline-none mt-0.5"
+              >
+            </div>
+          </div>
+
+          <!-- Kolom Pencarian Cepat Produk -->
+          <div class="relative flex-grow">
             <input 
               type="text" 
-              id="lokasiInput" 
-              placeholder="Contoh: Rak A1, Blok B, Lantai 2..." 
-              autocomplete="off"
-              oninput="handleLokasiChange(this.value)"
-              class="bg-transparent text-xs font-bold text-slate-800 placeholder-slate-400 outline-none mt-0.5"
+              id="searchBox" 
+              placeholder="Cari nama produk (misal: Selena, Chanel, White aoud)..." 
+              oninput="filterProducts(this.value)"
+              class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/10 text-xs text-slate-800 outline-none transition"
             >
+            <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
+
+          <!-- Tombol Kosongkan -->
+          <button 
+            type="button" 
+            onclick="resetAllInputs()" 
+            class="px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-100 text-xs font-semibold flex items-center justify-center gap-1.5 transition cursor-pointer flex-shrink-0"
+          >
+            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+            <span>Kosongkan</span>
+          </button>
+
+        </div>
+      </div>
+
+      <!-- PETUNJUK & STATISTIK RINGKAS -->
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-3.5 px-1 text-xs text-slate-500">
+        <div class="flex flex-wrap items-center gap-2">
+          <span>Daftar <span id="displayedCount" class="font-bold text-slate-800">21</span> produk.</span>
+          <span class="text-slate-300">•</span>
+          <span class="inline-flex items-center gap-1.5 text-[11px] font-semibold text-slate-600">
+            Output:
+            <span id="lokasiPreviewBadge" class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full font-bold text-emerald-800 bg-emerald-100/90 border border-emerald-300 shadow-2xs">
+              <svg class="w-3 h-3 text-emerald-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              <span id="lokasiPreviewText">Gudang (Belum diisi)</span>
+            </span>
+          </span>
+        </div>
+        <div id="filledCounterText" class="font-bold text-emerald-700">
+          0 produk terisi
+        </div>
+      </div>
+
+      <!-- FORM UTAMA DENGAN GRID PRODUK MODERN -->
+      <form id="restockForm" onsubmit="handleFormSubmit(event)">
+        <!-- GRID 21 PRODUK (MODERN & RESPONSIVE) -->
+        <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 mb-10">
+          <!-- Item produk dirender lewat JavaScript -->
+        </div>
+      </form>
+
+    </div>
+
+    <!-- ================= VIEW 2: RIWAYAT & EDIT DATA ================= -->
+    <div id="viewRiwayat" class="hidden">
+      
+      <!-- INFO BANNER EDIT CEPAT -->
+      <div class="bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-transparent border border-emerald-200 rounded-2xl p-4 mb-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold text-base shadow-sm flex-shrink-0">
+            ✏️
+          </div>
+          <div>
+            <h2 class="text-xs sm:text-sm font-bold text-slate-900">Fitur Edit Restok Langsung Aktif</h2>
+            <p class="text-[11px] sm:text-xs text-slate-600 leading-relaxed">
+              Jika ada kesalahan catat atau penyesuaian jumlah, klik tombol <strong>Edit</strong> pada data terkait. Data langsung diperbarui di database Google Spreadsheet tanpa perlu menghapus baris terlebih dahulu!
+            </p>
           </div>
         </div>
+        
+        <button 
+          type="button" 
+          onclick="fetchGudangHistory(true)" 
+          class="self-start sm:self-center flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-emerald-300 bg-white hover:bg-emerald-50 active:scale-95 text-emerald-800 text-xs font-bold transition shadow-2xs cursor-pointer"
+          title="Sinkronkan dengan Google Spreadsheet"
+        >
+          <svg id="riwayatSyncSpinner" class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          </svg>
+          <span id="riwayatSyncText">Segarkan</span>
+        </button>
+      </div>
 
-        <!-- Kolom Pencarian Cepat Produk -->
+      <!-- METRIK RINGKAS RIWAYAT GUDANG -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-5">
+        <div class="bg-white rounded-xl border border-slate-200 p-3.5 shadow-2xs">
+          <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Total Stok Tercatat</span>
+          <span id="statRiwayatPcs" class="text-base sm:text-lg font-black text-slate-900 block mt-0.5">0 pcs</span>
+        </div>
+        <div class="bg-white rounded-xl border border-slate-200 p-3.5 shadow-2xs">
+          <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Total Pencatatan</span>
+          <span id="statRiwayatBaris" class="text-base sm:text-lg font-black text-slate-900 block mt-0.5">0 entri</span>
+        </div>
+        <div class="col-span-2 sm:col-span-1 bg-white rounded-xl border border-slate-200 p-3.5 shadow-2xs">
+          <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Lokasi Aktif</span>
+          <span id="statRiwayatLokasi" class="text-base sm:text-lg font-black text-emerald-700 block mt-0.5 truncate">-</span>
+        </div>
+      </div>
+
+      <!-- TOOLBAR: FILTER & SEARCH BOX -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-3.5 sm:p-4 shadow-2xs mb-5 flex flex-col md:flex-row items-stretch md:items-center gap-3">
+        
+        <!-- Search Box Riwayat -->
         <div class="relative flex-grow">
           <input 
             type="text" 
-            id="searchBox" 
-            placeholder="Cari nama produk (misal: Selena, Chanel, White aoud)..." 
-            oninput="filterProducts(this.value)"
-            class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/10 text-xs text-slate-800 outline-none transition"
+            id="riwayatSearchBox" 
+            placeholder="Cari produk, tanggal, lokasi..." 
+            oninput="renderRiwayatList()"
+            class="w-full pl-9 pr-3.5 py-2 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/10 text-xs text-slate-800 outline-none transition"
           >
-          <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-4 h-4 text-slate-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
         </div>
 
-        <!-- Tombol Kosongkan -->
+        <!-- Filter Lokasi Dropdown -->
+        <select 
+          id="riwayatFilterLokasi" 
+          onchange="renderRiwayatList()" 
+          class="px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 text-xs font-semibold text-slate-700 outline-none focus:border-emerald-500 cursor-pointer flex-shrink-0"
+        >
+          <option value="">Semua Lokasi</option>
+        </select>
+
+        <!-- Filter Tanggal Input -->
+        <input 
+          type="date" 
+          id="riwayatFilterTanggal" 
+          onchange="renderRiwayatList()" 
+          title="Filter tanggal spesifik"
+          class="px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 text-xs font-semibold text-slate-700 outline-none focus:border-emerald-500 cursor-pointer flex-shrink-0"
+        >
+
+        <!-- Tombol Reset Filter -->
         <button 
           type="button" 
-          onclick="resetAllInputs()" 
-          class="px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-100 text-xs font-semibold flex items-center justify-center gap-1.5 transition cursor-pointer flex-shrink-0"
+          onclick="resetRiwayatFilter()" 
+          class="px-3 py-2 rounded-xl border border-slate-200 text-slate-500 hover:text-slate-800 hover:bg-slate-100 text-xs font-semibold transition cursor-pointer flex-shrink-0"
         >
-          <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-          </svg>
-          <span>Kosongkan</span>
+          Reset Filter
         </button>
 
       </div>
-    </div>
 
-    <!-- PETUNJUK & STATISTIK RINGKAS -->
-    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-3.5 px-1 text-xs text-slate-500">
-      <div class="flex flex-wrap items-center gap-2">
-        <span>Daftar <span id="displayedCount" class="font-bold text-slate-800">21</span> produk.</span>
-        <span class="text-slate-300">•</span>
-        <span class="inline-flex items-center gap-1.5 text-[11px] font-semibold text-slate-600">
-          Output:
-          <span id="lokasiPreviewBadge" class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full font-bold text-emerald-800 bg-emerald-100/90 border border-emerald-300 shadow-2xs">
-            <svg class="w-3 h-3 text-emerald-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+      <!-- KONTEN DAFTAR DATA: TABEL (DESKTOP) & KARTU (MOBILE) -->
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
+        
+        <!-- Bar Header & Info -->
+        <div class="px-4 py-3 bg-slate-50/80 border-b border-slate-200 flex items-center justify-between text-xs text-slate-500">
+          <span id="riwayatCountInfo" class="font-bold text-slate-700">Menampilkan 0 data restok</span>
+          <span class="text-[11px] font-medium text-slate-400 hidden sm:inline">Klik Edit untuk ubah langsung</span>
+        </div>
+
+        <!-- TABEL DESKTOP -->
+        <div class="hidden md:block overflow-x-auto">
+          <table class="w-full text-left text-xs text-slate-700">
+            <thead class="bg-slate-50 text-[10px] font-bold text-slate-400 uppercase tracking-wider border-b border-slate-200">
+              <tr>
+                <th class="px-4 py-3 w-12 text-center">#</th>
+                <th class="px-4 py-3 w-28">Tanggal</th>
+                <th class="px-4 py-3">Lokasi Penyimpanan</th>
+                <th class="px-4 py-3">Nama Produk</th>
+                <th class="px-4 py-3 text-right w-28">Jumlah</th>
+                <th class="px-4 py-3 text-center w-24">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="riwayatTableBody" class="divide-y divide-slate-100">
+              <!-- Rendered via JavaScript -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- LIST KARTU UNTUK TAMPILAN MOBILE -->
+        <div id="riwayatCardsContainer" class="block md:hidden divide-y divide-slate-100 p-2 space-y-2">
+          <!-- Rendered via JavaScript -->
+        </div>
+
+        <!-- EMPTY STATE KOSONG -->
+        <div id="riwayatEmptyState" class="hidden p-8 text-center text-slate-500">
+          <div class="w-12 h-12 mx-auto rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mb-3">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
             </svg>
-            <span id="lokasiPreviewText">Gudang (Belum diisi)</span>
-          </span>
-        </span>
-      </div>
-      <div id="filledCounterText" class="font-bold text-emerald-700">
-        0 produk terisi
-      </div>
-    </div>
+          </div>
+          <p class="text-sm font-bold text-slate-800">Tidak ada data restok ditemukan</p>
+          <p class="text-xs text-slate-400 mt-1">Coba sesuaikan kata kunci pencarian atau ganti filter tanggal &amp; lokasi.</p>
+        </div>
 
-    <!-- FORM UTAMA DENGAN GRID PRODUK MODERN -->
-    <form id="restockForm" onsubmit="handleFormSubmit(event)">
-      <!-- GRID 21 PRODUK (MODERN & RESPONSIVE) -->
-      <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 mb-10">
-        <!-- Item produk dirender lewat JavaScript -->
       </div>
-    </form>
+
+    </div>
 
   </main>
 
-  <!-- ================= STICKY ACTION BAR BAWAH ================= -->
-  <div class="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-slate-200 shadow-xl py-3 px-4 sm:px-6 z-40">
+  <!-- ================= STICKY ACTION BAR BAWAH (UNTUK FORM INPUT) ================= -->
+  <div id="bottomBar" class="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-slate-200 shadow-xl py-3 px-4 sm:px-6 z-40 transition-transform duration-200">
     <div class="max-w-5xl mx-auto flex items-center justify-between gap-3">
       
       <!-- Counter Ringkasan -->
@@ -233,395 +393,201 @@
     </div>
   </div>
 
-  <!-- ================= JAVASCRIPT LOGIC ================= -->
-  <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbytdCHfgKA7F1wGBKEr3eZhur9ZvNDiPpeUOb0HjcV4d0Pvfe9_9UZkxtoxR4RqhGmj/exec";
-    const PENANDA_DIVISI = "Icang";
-    const STORAGE_KEY = "restok_history_icang";
-
-    // DAFTAR 21 PRODUK
-    const PRODUCTS = [
-      "Selena",
-      "D&g light blue",
-      "Lacoste Sport",
-      "Maid Prince",
-      "Poloish",
-      "Imperial",
-      "White aoud",
-      "Mia Tabac",
-      "Coco Chanel",
-      "Tobacco vanilla",
-      "Al rehab lovely",
-      "Indigo",
-      "Vision",
-      "Aqua kiss",
-      "Roman 1a",
-      "Pramugari air",
-      "Purenol",
-      "Body Wash (Tanpa Aroma)",
-      "Body mist (Tanpa Aroma)",
-      "Deodorant (Tanpa Aroma)",
-      "Botol Parfum (Kosongan)"
-    ];
-
-    const quantities = {};
-
-    // DOM Elements
-    const grid = document.getElementById('productGrid');
-    const tanggalInput = document.getElementById('tanggalInput');
-    const lokasiInput = document.getElementById('lokasiInput');
-    const lokasiPreviewText = document.getElementById('lokasiPreviewText');
-    const lokasiPreviewBadge = document.getElementById('lokasiPreviewBadge');
-    const bottomLokasiBadge = document.getElementById('bottomLokasiBadge');
-    const searchBox = document.getElementById('searchBox');
-    const displayedCount = document.getElementById('displayedCount');
-    const filledCounterText = document.getElementById('filledCounterText');
-    const filledBadge = document.getElementById('filledBadge');
-    const summaryText = document.getElementById('summaryText');
-    const totalQtyText = document.getElementById('totalQtyText');
-    const btnSubmit = document.getElementById('btnSubmit');
-    const submitBtnText = document.getElementById('submitBtnText');
-    const submitSpinner = document.getElementById('submitSpinner');
-    const alertBox = document.getElementById('alertBox');
-    const alertMessage = document.getElementById('alertMessage');
-    const alertIcon = document.getElementById('alertIcon');
-
-    document.addEventListener('DOMContentLoaded', () => {
-      // Inisialisasi Tanggal Hari Ini
-      const now = new Date();
-      const yyyy = now.getFullYear();
-      const mm = String(now.getMonth() + 1).padStart(2, '0');
-      const dd = String(now.getDate()).padStart(2, '0');
-      tanggalInput.value = `${yyyy}-${mm}-${dd}`;
-
-      // Ambil lokasi terakhir dari penyimpanan lokal
-      const savedLokasi = localStorage.getItem('last_gudang_lokasi') || '';
-      if (savedLokasi) {
-        lokasiInput.value = savedLokasi;
-      }
-      handleLokasiChange(savedLokasi);
-
-      // Inisialisasi State
-      PRODUCTS.forEach(p => {
-        quantities[p] = 0;
-      });
-
-      renderProductGrid();
-    });
-
-    // Helper format output lokasi: menghasilkan 'Gudang (lokasi input)'
-    function getFormattedLokasi(rawVal) {
-      const val = (rawVal || '').trim();
-      if (!val) return '';
-      // Jika user sudah menuliskan dengan awalan 'Gudang (..)', biarkan sesuai
-      if (val.toLowerCase().startsWith('gudang (')) {
-        return val;
-      } else if (val.toLowerCase().startsWith('gudang ')) {
-        const sub = val.substring(7).trim();
-        return sub ? `Gudang (${sub})` : 'Gudang';
-      } else if (val.toLowerCase() === 'gudang') {
-        return 'Gudang';
-      }
-      return `Gudang (${val})`;
-    }
-
-    // Handler input perubahan lokasi secara real-time
-    function handleLokasiChange(val) {
-      const trimmed = (val || '').trim();
-      const formatted = getFormattedLokasi(trimmed);
-
-      if (lokasiPreviewText) {
-        lokasiPreviewText.textContent = formatted || 'Gudang (Belum diisi)';
-      }
-
-      if (lokasiPreviewBadge) {
-        if (formatted) {
-          lokasiPreviewBadge.className = "inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full font-bold text-emerald-800 bg-emerald-100/90 border border-emerald-300 shadow-2xs";
-        } else {
-          lokasiPreviewBadge.className = "inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full font-semibold text-slate-500 bg-slate-100 border border-slate-200";
-        }
-      }
-
-      if (bottomLokasiBadge) {
-        bottomLokasiBadge.textContent = formatted || 'Gudang (-)';
-      }
-    }
-
-    // Render Grid Produk Modern
-    function renderProductGrid() {
-      const keyword = searchBox.value.toLowerCase().trim();
-      grid.innerHTML = '';
-
-      const filtered = PRODUCTS.filter(p => p.toLowerCase().includes(keyword));
-      displayedCount.textContent = filtered.length;
-
-      filtered.forEach((prod, idx) => {
-        const qty = quantities[prod] || 0;
-        const isFilled = qty > 0;
-
-        const card = document.createElement('div');
-        card.id = `card-${escapeId(prod)}`;
-        card.className = `product-card bg-white rounded-xl border ${isFilled ? 'border-emerald-500 bg-emerald-50/20 shadow-xs ring-1 ring-emerald-500/20' : 'border-slate-200 hover:border-slate-300'} p-3.5 transition flex items-center justify-between gap-3`;
-        card.dataset.name = prod.toLowerCase();
-
-        card.innerHTML = `
-          <div class="flex-grow min-w-0">
-            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">#${idx + 1}</span>
-            <label for="prod-${escapeId(prod)}" class="text-xs font-bold text-slate-900 block truncate cursor-pointer leading-tight mt-0.5">
-              ${prod}
-            </label>
+  <!-- ================= MODAL EDIT DATA RESTOK ================= -->
+  <div id="editModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+    <!-- Backdrop Blur -->
+    <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs transition-opacity" onclick="closeEditModal()"></div>
+    
+    <!-- Modal Card Dialog -->
+    <div class="relative bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-lg overflow-hidden z-10 modal-enter flex flex-col">
+      
+      <!-- Modal Header -->
+      <div class="px-5 py-4 bg-slate-50/80 border-b border-slate-200 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-sm">
+            ✏️
           </div>
+          <div>
+            <h3 class="text-sm sm:text-base font-bold text-slate-900 leading-tight">Edit Data Restok</h3>
+            <p class="text-[11px] text-slate-500">Perbarui data langsung tanpa perlu menghapus dari database</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeEditModal()" class="w-8 h-8 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-200/60 flex items-center justify-center transition cursor-pointer">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
 
-          <!-- Input Manual Jumlah -->
-          <div class="relative flex-shrink-0 w-28">
+      <!-- Alert Pesan di dalam Modal -->
+      <div id="modalAlertBox" class="hidden mx-5 mt-4 p-3 rounded-xl text-xs font-semibold border flex items-center justify-between">
+        <span id="modalAlertMessage"></span>
+      </div>
+
+      <!-- Modal Form Body -->
+      <div class="p-5 space-y-4">
+        <input type="hidden" id="editRowId">
+        <input type="hidden" id="editOldTanggal">
+        <input type="hidden" id="editOldLokasi">
+        <input type="hidden" id="editOldProduk">
+        <input type="hidden" id="editOldJumlah">
+
+        <!-- Input Tanggal -->
+        <div>
+          <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">
+            Tanggal Pencatatan <span class="text-rose-500">*</span>
+          </label>
+          <div class="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 focus-within:ring-2 focus-within:ring-emerald-500/20 focus-within:border-emerald-500 transition">
+            <svg class="w-4 h-4 text-emerald-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
             <input 
-              type="number" 
-              min="0"
-              id="prod-${escapeId(prod)}" 
-              placeholder="0"
-              value="${qty > 0 ? qty : ''}"
-              oninput="handleQtyInput('${prod}', this.value)"
-              class="w-full pl-3 pr-8 py-1.5 text-right text-xs font-bold text-slate-900 rounded-lg border ${isFilled ? 'border-emerald-500 bg-white focus:ring-2 focus:ring-emerald-500/20' : 'border-slate-200 bg-slate-50 focus:bg-white focus:border-emerald-500'} outline-none transition"
+              type="date" 
+              id="editTanggalInput" 
+              class="w-full bg-transparent text-xs font-bold text-slate-800 outline-none cursor-pointer"
             >
-            <span class="absolute right-2.5 top-2 text-[10px] font-medium text-slate-400 pointer-events-none">pcs</span>
           </div>
-        `;
-        grid.appendChild(card);
-      });
+        </div>
 
-      updateSummaryBar();
-    }
+        <!-- Input Lokasi Penyimpanan -->
+        <div>
+          <div class="flex items-center justify-between mb-1.5">
+            <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+              Lokasi Penyimpanan <span class="text-rose-500">*</span>
+            </label>
+            <span id="editLokasiPreviewBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200">
+              Gudang (-)
+            </span>
+          </div>
+          <div class="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 focus-within:ring-2 focus-within:ring-emerald-500/20 focus-within:border-emerald-500 transition">
+            <svg class="w-4 h-4 text-emerald-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            <input 
+              type="text" 
+              id="editLokasiInput" 
+              placeholder="Contoh: Rak A1, Blok B, Lantai 2..."
+              oninput="handleEditLokasiInput(this.value)"
+              class="w-full bg-transparent text-xs font-bold text-slate-800 placeholder-slate-400 outline-none"
+            >
+          </div>
+        </div>
 
-    function escapeId(str) {
-      return str.replace(/[^a-zA-Z0-9]/g, '_');
-    }
+        <!-- Pilihan Nama Produk -->
+        <div>
+          <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">
+            Nama Produk <span class="text-rose-500">*</span>
+          </label>
+          <div class="relative">
+            <select 
+              id="editProdukSelect" 
+              class="w-full px-3 py-2.5 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/10 text-xs font-bold text-slate-800 outline-none transition appearance-none cursor-pointer"
+            >
+              <!-- Populated via JS -->
+            </select>
+            <svg class="w-4 h-4 text-slate-400 absolute right-3 top-3 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
+        </div>
 
-    function handleQtyInput(prodName, val) {
-      const parsed = parseInt(val, 10);
-      const qty = isNaN(parsed) || parsed < 0 ? 0 : parsed;
-      quantities[prodName] = qty;
+        <!-- Input Jumlah Stok -->
+        <div>
+          <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">
+            Jumlah Restok (pcs) <span class="text-rose-500">*</span>
+          </label>
+          <div class="flex items-center gap-2">
+            <button 
+              type="button" 
+              onclick="stepEditQty(-10)" 
+              class="w-9 h-9 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 font-bold text-xs flex items-center justify-center transition cursor-pointer flex-shrink-0"
+              title="-10 pcs"
+            >
+              -10
+            </button>
+            <button 
+              type="button" 
+              onclick="stepEditQty(-1)" 
+              class="w-9 h-9 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 font-bold text-sm flex items-center justify-center transition cursor-pointer flex-shrink-0"
+              title="-1 pcs"
+            >
+              -
+            </button>
+            
+            <div class="relative flex-grow">
+              <input 
+                type="number" 
+                id="editQtyInput" 
+                min="1" 
+                class="w-full pl-3 pr-10 py-2 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/10 text-center text-sm font-black text-slate-900 outline-none transition"
+              >
+              <span class="absolute right-3 top-2.5 text-xs font-bold text-slate-400 pointer-events-none">pcs</span>
+            </div>
 
-      const card = document.getElementById(`card-${escapeId(prodName)}`);
-      const input = document.getElementById(`prod-${escapeId(prodName)}`);
+            <button 
+              type="button" 
+              onclick="stepEditQty(1)" 
+              class="w-9 h-9 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 font-bold text-sm flex items-center justify-center transition cursor-pointer flex-shrink-0"
+              title="+1 pcs"
+            >
+              +
+            </button>
+            <button 
+              type="button" 
+              onclick="stepEditQty(10)" 
+              class="w-9 h-9 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 font-bold text-xs flex items-center justify-center transition cursor-pointer flex-shrink-0"
+              title="+10 pcs"
+            >
+              +10
+            </button>
+          </div>
+        </div>
 
-      if (card && input) {
-        if (qty > 0) {
-          card.className = "product-card bg-white rounded-xl border border-emerald-500 bg-emerald-50/20 shadow-xs ring-1 ring-emerald-500/20 p-3.5 transition flex items-center justify-between gap-3";
-          input.className = "w-full pl-3 pr-8 py-1.5 text-right text-xs font-bold text-slate-900 rounded-lg border border-emerald-500 bg-white focus:ring-2 focus:ring-emerald-500/20 outline-none transition";
-        } else {
-          card.className = "product-card bg-white rounded-xl border border-slate-200 hover:border-slate-300 p-3.5 transition flex items-center justify-between gap-3";
-          input.className = "w-full pl-3 pr-8 py-1.5 text-right text-xs font-bold text-slate-900 rounded-lg border border-slate-200 bg-slate-50 focus:bg-white focus:border-emerald-500 outline-none transition";
-        }
-      }
+      </div>
 
-      updateSummaryBar();
-    }
+      <!-- Modal Footer -->
+      <div class="px-5 py-3.5 bg-slate-50 border-t border-slate-200 flex items-center justify-between gap-2">
+        <button 
+          type="button" 
+          id="btnDeleteRow"
+          onclick="handleDeleteFromModal()" 
+          class="px-3 py-2 rounded-xl text-rose-600 hover:text-rose-700 hover:bg-rose-50 text-xs font-bold flex items-center gap-1.5 transition cursor-pointer"
+          title="Hapus baris data ini dari database"
+        >
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+          </svg>
+          <span>Hapus</span>
+        </button>
 
-    function filterProducts(keyword) {
-      const kw = keyword.toLowerCase().trim();
-      const cards = document.querySelectorAll('.product-card');
-      let visibleCount = 0;
-      cards.forEach(c => {
-        if (!kw || c.dataset.name.includes(kw)) {
-          c.classList.remove('hidden');
-          visibleCount++;
-        } else {
-          c.classList.add('hidden');
-        }
-      });
-      displayedCount.textContent = visibleCount;
-    }
+        <div class="flex items-center gap-2">
+          <button 
+            type="button" 
+            onclick="closeEditModal()" 
+            class="px-4 py-2 rounded-xl border border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-100 text-xs font-semibold transition cursor-pointer"
+          >
+            Batal
+          </button>
+          <button 
+            type="button" 
+            id="btnSaveEdit" 
+            onclick="handleSaveEdit()" 
+            class="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-bold text-xs shadow-md shadow-emerald-600/20 flex items-center gap-2 transition cursor-pointer"
+          >
+            <svg id="saveEditSpinner" class="hidden animate-spin w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+            </svg>
+            <span id="saveEditBtnText">Simpan Perubahan</span>
+          </button>
+        </div>
+      </div>
 
-    function updateSummaryBar() {
-      let filledCount = 0;
-      let totalQty = 0;
+    </div>
+  </div>
 
-      Object.keys(quantities).forEach(k => {
-        const q = quantities[k];
-        if (q > 0) {
-          filledCount++;
-          totalQty += q;
-        }
-      });
-
-      filledBadge.textContent = filledCount;
-      summaryText.textContent = `${filledCount} produk diisi`;
-      totalQtyText.textContent = `Total ${totalQty.toLocaleString('id-ID')} pcs`;
-      filledCounterText.textContent = `${filledCount} produk terisi`;
-      btnSubmit.disabled = filledCount === 0;
-    }
-
-    function resetAllInputs() {
-      if (confirm('Kosongkan semua jumlah produk yang telah diisi?')) {
-        PRODUCTS.forEach(p => {
-          quantities[p] = 0;
-          const input = document.getElementById(`prod-${escapeId(p)}`);
-          if (input) input.value = '';
-          const card = document.getElementById(`card-${escapeId(p)}`);
-          if (card) {
-            card.className = "product-card bg-white rounded-xl border border-slate-200 hover:border-slate-300 p-3.5 transition flex items-center justify-between gap-3";
-          }
-        });
-        updateSummaryBar();
-      }
-    }
-
-    // Submit Data
-    async function handleFormSubmit(e) {
-      if (e) e.preventDefault();
-
-      const tanggal = tanggalInput.value;
-      if (!tanggal) {
-        showAlert('Tanggal wajib diisi!', true);
-        return;
-      }
-
-      const rawLokasi = (lokasiInput.value || '').trim();
-      if (!rawLokasi) {
-        showAlert('Lokasi penyimpanan wajib diisi!', true);
-        lokasiInput.focus();
-        return;
-      }
-
-      const outputLokasi = getFormattedLokasi(rawLokasi);
-
-      // Simpan lokasi terakhir ke localStorage agar tidak perlu mengetik ulang
-      localStorage.setItem('last_gudang_lokasi', rawLokasi);
-
-      const itemsToSave = [];
-      Object.keys(quantities).forEach(prod => {
-        if (quantities[prod] > 0) {
-          itemsToSave.push({ 
-            namaProduk: prod, 
-            jumlahProduk: quantities[prod],
-            lokasi: outputLokasi 
-          });
-        }
-      });
-
-      if (itemsToSave.length === 0) {
-        showAlert('Isi jumlah minimal pada salah satu produk!', true);
-        return;
-      }
-
-      btnSubmit.disabled = true;
-      submitSpinner.classList.remove('hidden');
-      submitBtnText.textContent = 'Menyimpan...';
-
-      try {
-        const payload = {
-          penanda: PENANDA_DIVISI,
-          tanggal: tanggal,
-          lokasi: outputLokasi,
-          namaLokasi: outputLokasi,
-          items: itemsToSave
-        };
-
-        const res = await fetch(SCRIPT_URL, {
-          method: 'POST',
-          body: JSON.stringify(payload),
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' }
-        });
-
-        const result = await res.json();
-
-        if (result.status === 'success') {
-          // Simpan ke cache lokal agar dashboard langsung tersinkron
-          saveLocalHistoryCache(itemsToSave, tanggal, outputLokasi, rawLokasi);
-
-          // Reset nilai form kuantitas produk
-          PRODUCTS.forEach(p => {
-            quantities[p] = 0;
-            const input = document.getElementById(`prod-${escapeId(p)}`);
-            if (input) input.value = '';
-            const card = document.getElementById(`card-${escapeId(p)}`);
-            if (card) {
-              card.className = "product-card bg-white rounded-xl border border-slate-200 hover:border-slate-300 p-3.5 transition flex items-center justify-between gap-3";
-            }
-          });
-
-          updateSummaryBar();
-          showAlert(`Berhasil menyimpan ${itemsToSave.length} produk ke ${outputLokasi}!`);
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        } else {
-          // Fallback sequential
-          let successCount = 0;
-          for (const item of itemsToSave) {
-            try {
-              const sRes = await fetch(SCRIPT_URL, {
-                method: 'POST',
-                body: JSON.stringify({
-                  penanda: PENANDA_DIVISI,
-                  tanggal: tanggal,
-                  lokasi: outputLokasi,
-                  namaLokasi: outputLokasi,
-                  namaProduk: item.namaProduk,
-                  jumlahProduk: item.jumlahProduk
-                }),
-                headers: { 'Content-Type': 'text/plain;charset=utf-8' }
-              });
-              const sData = await sRes.json();
-              if (sData.status === 'success') {
-                successCount++;
-              }
-            } catch (err) {
-              console.error(err);
-            }
-          }
-
-          saveLocalHistoryCache(itemsToSave, tanggal, outputLokasi, rawLokasi);
-
-          PRODUCTS.forEach(p => {
-            quantities[p] = 0;
-            const input = document.getElementById(`prod-${escapeId(p)}`);
-            if (input) input.value = '';
-          });
-          updateSummaryBar();
-          showAlert(`Selesai! ${successCount} produk berhasil dicatat ke ${outputLokasi}.`);
-        }
-
-      } catch (err) {
-        console.error(err);
-        showAlert('Gagal mengirim data: ' + err.message, true);
-      } finally {
-        btnSubmit.disabled = false;
-        submitSpinner.classList.add('hidden');
-        submitBtnText.textContent = 'Simpan Restok';
-      }
-    }
-
-    function saveLocalHistoryCache(items, tanggal, outputLokasi, rawLokasi) {
-      try {
-        let stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-        items.forEach(it => {
-          stored.unshift({ 
-            tanggal: tanggal, 
-            lokasi: rawLokasi,
-            namaSales: outputLokasi, // Format "Gudang (lokasi input)" agar konsisten di dashboard
-            namaProduk: it.namaProduk, 
-            jumlahProduk: it.jumlahProduk 
-          });
-        });
-        if (stored.length > 100) stored = stored.slice(0, 100);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(stored));
-      } catch (e) {}
-    }
-
-    function showAlert(msg, isError = false) {
-      alertBox.classList.remove('hidden');
-      alertMessage.textContent = msg;
-      if (isError) {
-        alertBox.className = 'mb-5 p-4 rounded-xl text-sm font-medium fade-in shadow-xs bg-rose-50 border border-rose-200 text-rose-950 flex items-center justify-between';
-        alertIcon.innerHTML = `<span class="w-5 h-5 rounded-full bg-rose-100 text-rose-700 flex items-center justify-center font-bold text-xs">!</span>`;
-      } else {
-        alertBox.className = 'mb-5 p-4 rounded-xl text-sm font-medium fade-in shadow-xs bg-emerald-50 border border-emerald-200 text-emerald-950 flex items-center justify-between';
-        alertIcon.innerHTML = `<span class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-xs">✓</span>`;
-      }
-    }
-
-    function closeAlert() {
-      alertBox.classList.add('hidden');
-    }
-  </script>
+  <!-- ================= JAVASCRIPT EXTERNAL ================= -->
+  <script src="js/script.js"></script>
 </body>
 </html>
